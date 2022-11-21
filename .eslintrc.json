@@ -21,6 +21,7 @@
 	},
 	"plugins": ["react"],
 	"rules": {
-		"prefer-template": "error"
+		"prefer-template": "error",
+		"no-console": "warn"
 	}
 }
