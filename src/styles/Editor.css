@@ -1,0 +1,10 @@
+.Editor {
+	height: 100%;
+	flex-grow: 1;
+	background: var(--independence);
+}
+
+.Editor .wrapper {
+	display: flex;
+	height: 65%;
+}
