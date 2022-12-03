@@ -1,4 +1,4 @@
-import '../styles/EditorTabs.css';
+import '@/styles/EditorTabs.css';
 
 function EditorTabs(): JSX.Element {
 	return <div className="EditorTabs" />;

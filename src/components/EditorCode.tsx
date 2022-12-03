@@ -1,4 +1,4 @@
-import '../styles/EditorCode.css';
+import '@/styles/EditorCode.css';
 
 function EditorCode(): JSX.Element {
 	return <div className="EditorCode" />;

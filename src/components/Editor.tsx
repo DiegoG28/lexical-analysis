@@ -1,8 +1,8 @@
-import '../styles/Editor.css';
-import EditorCode from './EditorCode';
-import EditorConsole from './EditorConsole';
-import EditorSideBar from './EditorSideBar';
-import EditorTabs from './EditorTabs';
+import '@/styles/Editor.css';
+import EditorCode from '@/components/EditorCode';
+import EditorConsole from '@/components/EditorConsole';
+import EditorSideBar from '@/components/EditorSideBar';
+import EditorTabs from '@/components/EditorTabs';
 
 function Editor(): JSX.Element {
 	return (

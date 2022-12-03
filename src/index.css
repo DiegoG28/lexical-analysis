@@ -3,6 +3,7 @@
 * {
 	margin: 0;
 	padding: 0;
+	box-sizing: border-box;
 }
 
 :root {
@@ -19,7 +20,6 @@
 body {
 	width: 100%;
 	height: 100vh;
-	box-sizing: border-box;
 }
 
 .main-txt {
@@ -44,4 +44,8 @@ body {
 	font-weight: 500;
 	font-size: 14px;
 	line-height: 18px;
+}
+
+.fire-background {
+	background: linear-gradient(262.76deg, #f08700 0%, #f0ad00 100%);
 }
