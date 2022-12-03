@@ -1,0 +1,33 @@
+.File {
+	margin-bottom: 10px;
+	padding: 10px;
+	color: #fff;
+	cursor: pointer;
+	transition: 0.1s ease all;
+}
+
+.File:hover {
+	background: var(--independence);
+}
+
+.File:focus {
+	background: var(--independence);
+}
+
+p {
+	display: inline-block;
+}
+
+.File:focus p {
+	background-image: linear-gradient(262.76deg, #f08700 0%, #f0ad00 100%);
+	background-clip: text;
+	color: transparent;
+}
+
+.File:focus svg {
+	color: var(--hooney);
+}
+
+svg {
+	margin-right: 5px;
+}
