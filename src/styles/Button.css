@@ -4,5 +4,11 @@
 	cursor: pointer;
 	padding: 5px 15px;
 	border-radius: 2px;
+	transition: 0.1s ease all;
 	color: #fff;
+}
+
+.Button p {
+	display: inline-block;
+	margin-right: 5px;
 }

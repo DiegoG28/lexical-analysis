@@ -1,3 +1,11 @@
 .EditorConsole {
 	border-top: solid 2px var(--space-cadet);
+	padding: 10px;
+	color: var(--white);
+}
+
+.EditorConsole__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 }

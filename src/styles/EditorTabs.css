@@ -1,4 +1,7 @@
 .EditorTabs {
-	height: 6%;
+	display: flex;
+	padding: 5px 10px;
+	gap: 10px;
+	height: 4%;
 	background: var(--space-cadet);
 }

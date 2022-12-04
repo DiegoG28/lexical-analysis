@@ -14,7 +14,7 @@
 	background: var(--independence);
 }
 
-p {
+.File p {
 	display: inline-block;
 }
 
@@ -24,10 +24,10 @@ p {
 	color: transparent;
 }
 
-.File:focus svg {
-	color: var(--hooney);
+.File svg {
+	margin-right: 5px;
 }
 
-svg {
-	margin-right: 5px;
+.File:focus svg {
+	color: var(--hooney);
 }

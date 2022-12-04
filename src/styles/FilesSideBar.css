@@ -1,12 +1,12 @@
 .FilesSideBar {
-	width: 15%;
+	width: 12%;
 	height: 100%;
 	background: var(--space-cadet);
-	padding: 60px 0;
+	padding: 40px 0;
 	text-align: center;
 }
 
-.files {
+.FilesSideBar__files {
 	text-align: left;
 	margin-top: 20px;
 }

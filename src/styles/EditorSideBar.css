@@ -1,4 +1,16 @@
 .EditorSideBar {
 	flex-grow: 1;
 	height: 100%;
+	padding: 10px 25px;
+	color: var(--white);
+}
+
+.EditorSideBar__header {
+	text-align: center;
+	margin-bottom: 25px;
+}
+
+.EditorSideBar__content p,
+button {
+	margin-bottom: 15px;
 }
