@@ -1,0 +1,22 @@
+.Tab {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	cursor: pointer;
+	transition: 0.1s ease all;
+	color: #fff;
+	padding: 5px 10px;
+	border-radius: 2px;
+}
+
+.Tab:focus {
+	background: linear-gradient(
+		262.76deg,
+		rgba(240, 135, 0, 0.3) 0%,
+		rgba(240, 173, 0, 0.3) 100%
+	);
+}
+
+.Tab svg:hover {
+	color: var(--hooney);
+}
