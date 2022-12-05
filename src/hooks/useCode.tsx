@@ -1,9 +1,17 @@
 import { useState } from 'react';
+import { CodeContexData, codeContextDefaultValue } from '@/context/CodeContext';
 
-const useCode = (initialValue: string): [string, (value: string) => void] => {
-	const [code, setCode] = useState(initialValue);
+const useCode = (): CodeContexData => {
+	const [code, setCode] = useState(codeContextDefaultValue.code);
 
-	return [code, setCode];
+	const updateCode = (newCode: string): void => {
+		setCode(newCode);
+	};
+
+	return {
+		code,
+		updateCode,
+	};
 };
 
 export default useCode;

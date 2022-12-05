@@ -6,7 +6,7 @@ import CodeContext from '@/context/CodeContext';
 import useCode from '@/hooks/useCode';
 
 function App(): JSX.Element {
-	const code = useCode('');
+	const code = useCode();
 
 	return (
 		<CodeContext.Provider value={code}>

@@ -1,10 +1,11 @@
 import Editor, { useMonaco } from '@monaco-editor/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useContext } from 'react';
+import CodeContext from '@/context/CodeContext';
 import '@/styles/EditorCode.css';
 
 function EditorCode(): JSX.Element {
 	const monaco = useMonaco();
-	const [code, setCode] = useState('');
+	const { code } = useContext(CodeContext);
 
 	useEffect(() => {
 		if (monaco !== null) {

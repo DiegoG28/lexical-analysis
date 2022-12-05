@@ -1,7 +1,15 @@
-import React from 'react';
+import { createContext } from 'react';
 
-const CodeContext = React.createContext(
-	[] as unknown as [string, (value: string) => void],
-);
+export interface CodeContexData {
+	code: string;
+	updateCode: (newCode: string) => void;
+}
+
+export const codeContextDefaultValue: CodeContexData = {
+	code: '',
+	updateCode: () => null,
+};
+
+const CodeContext = createContext<CodeContexData>(codeContextDefaultValue);
 
 export default CodeContext;
