@@ -10,7 +10,7 @@ interface Props {
 
 function Tab(props: Props): JSX.Element {
 	const { file } = props;
-	const { currentFile, selectFile } = useContext(FileContext);
+	const { currentFile, selectFile, removeFile } = useContext(FileContext);
 	const isActive = currentFile?.name === file.name;
 
 	return (
@@ -19,7 +19,7 @@ function Tab(props: Props): JSX.Element {
 			onClick={() => selectFile(file)}
 		>
 			{file.name}
-			<FontAwesomeIcon icon={faXmark} />
+			<FontAwesomeIcon icon={faXmark} onClick={() => removeFile(file)} />
 		</div>
 	);
 }

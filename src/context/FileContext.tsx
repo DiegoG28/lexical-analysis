@@ -9,16 +9,20 @@ export interface IFileContexData {
 	files: IFile[];
 	currentFile: IFile | null;
 	addFile: (newFile: IFile) => void;
+	updateFile: (file: IFile) => void;
 	selectFile: (file: IFile) => void;
+	removeFile: (file: IFile) => void;
 }
 
 export const fileContextDefaultValue: IFileContexData = {
 	files: [],
 	currentFile: null,
 	addFile: () => null,
+	updateFile: () => null,
 	selectFile: () => null,
+	removeFile: () => null,
 };
 
-const CodeContext = createContext<IFileContexData>(fileContextDefaultValue);
+const FileContext = createContext<IFileContexData>(fileContextDefaultValue);
 
-export default CodeContext;
+export default FileContext;
