@@ -10,7 +10,7 @@
 	background: var(--independence);
 }
 
-.File:active {
+.File.active {
 	background: var(--independence);
 }
 

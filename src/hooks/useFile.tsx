@@ -1,4 +1,5 @@
-import { useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState } from 'react';
 import {
 	IFileContexData,
 	fileContextDefaultValue,
@@ -8,6 +9,7 @@ import {
 const useFile = (): IFileContexData => {
 	const [files, setFiles] = useState(fileContextDefaultValue.files);
 	const [currentFile, setCurrentFile] = useState<IFile | null>(null);
+	const [shouldUpdate, setShouldUpdate] = useState(false);
 
 	const addFile = (newFile: IFile): void => {
 		setFiles([...files, newFile]);
@@ -31,8 +33,15 @@ const useFile = (): IFileContexData => {
 	const removeFile = (file: IFile): void => {
 		const newFiles = files.filter(f => f.name !== file.name);
 		setFiles(newFiles);
-		setCurrentFile(newFiles[0]);
+		setShouldUpdate(true);
 	};
+
+	useEffect(() => {
+		if (shouldUpdate) {
+			setCurrentFile(files[0]);
+			setShouldUpdate(false);
+		}
+	}, [shouldUpdate]);
 
 	return {
 		files,
