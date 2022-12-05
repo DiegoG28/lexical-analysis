@@ -1,17 +1,24 @@
 import '@/styles/File.css';
 import { faFile } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useContext } from 'react';
+import FileContext, { IFile } from '@/context/FileContext';
 
 interface Props {
-	children: React.ReactNode;
+	file: IFile;
 }
 
 function File(props: Props): JSX.Element {
-	const { children } = props;
+	const { file } = props;
+	const { currentFile, selectFile } = useContext(FileContext);
+	const isActive = currentFile?.name === file.name;
 	return (
-		<div className="File txt" tabIndex={-1}>
+		<div
+			className={`File txt ${isActive ? 'active' : ''}`}
+			onClick={() => selectFile(file)}
+		>
 			<FontAwesomeIcon icon={faFile} />
-			<p>{children}</p>
+			<p>{file.name}</p>
 		</div>
 	);
 }

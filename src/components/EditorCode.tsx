@@ -1,11 +1,12 @@
 import Editor, { useMonaco } from '@monaco-editor/react';
-import { useEffect, useContext } from 'react';
-import CodeContext from '@/context/CodeContext';
+import { useEffect, useContext, useState } from 'react';
+import FileContext from '@/context/FileContext';
 import '@/styles/EditorCode.css';
 
 function EditorCode(): JSX.Element {
 	const monaco = useMonaco();
-	const { code } = useContext(CodeContext);
+	const [code, setCode] = useState('');
+	const { files } = useContext(FileContext);
 
 	useEffect(() => {
 		if (monaco !== null) {
@@ -23,6 +24,12 @@ function EditorCode(): JSX.Element {
 			});
 		}
 	}, [monaco]);
+
+	useEffect(() => {
+		if (files.length > 0) {
+			setCode(files[0].code);
+		}
+	}, [files]);
 
 	return (
 		<div className="EditorCode">

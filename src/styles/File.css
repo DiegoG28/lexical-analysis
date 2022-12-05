@@ -10,7 +10,7 @@
 	background: var(--independence);
 }
 
-.File:focus {
+.File:active {
 	background: var(--independence);
 }
 
@@ -18,7 +18,7 @@
 	display: inline-block;
 }
 
-.File:focus p {
+.File.active p {
 	background-image: linear-gradient(262.76deg, #f08700 0%, #f0ad00 100%);
 	background-clip: text;
 	color: transparent;
@@ -28,6 +28,6 @@
 	margin-right: 5px;
 }
 
-.File:focus svg {
+.File.active svg {
 	color: var(--hooney);
 }

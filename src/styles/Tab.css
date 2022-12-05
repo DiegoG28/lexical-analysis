@@ -9,7 +9,7 @@
 	border-radius: 2px;
 }
 
-.Tab:focus {
+.Tab.active {
 	background: linear-gradient(
 		262.76deg,
 		rgba(240, 135, 0, 0.3) 0%,
