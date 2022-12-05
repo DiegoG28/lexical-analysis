@@ -1,12 +1,11 @@
 import Editor, { useMonaco } from '@monaco-editor/react';
-import { useEffect, useContext, useState } from 'react';
+import { useEffect, useContext } from 'react';
 import FileContext from '@/context/FileContext';
 import '@/styles/EditorCode.css';
 
 function EditorCode(): JSX.Element {
 	const monaco = useMonaco();
-	const [code, setCode] = useState('');
-	const { files } = useContext(FileContext);
+	const { currentFile } = useContext(FileContext);
 
 	useEffect(() => {
 		if (monaco !== null) {
@@ -25,12 +24,6 @@ function EditorCode(): JSX.Element {
 		}
 	}, [monaco]);
 
-	useEffect(() => {
-		if (files.length > 0) {
-			setCode(files[0].code);
-		}
-	}, [files]);
-
 	return (
 		<div className="EditorCode">
 			{monaco !== null ? (
@@ -38,7 +31,7 @@ function EditorCode(): JSX.Element {
 					height="100%"
 					theme="independence"
 					language="javascript"
-					value={code}
+					value={currentFile?.code}
 				/>
 			) : null}
 		</div>
