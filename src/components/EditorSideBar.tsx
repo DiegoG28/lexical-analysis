@@ -1,10 +1,16 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable prefer-regex-literals */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
 import '@/styles/EditorSideBar.css';
 import { useContext } from 'react';
 import Button from '@/components/Button';
 import FileContext from '@/context/FileContext';
+import TerminalContext from '@/context/TerminalContext';
 
 function EditorSideBar(): JSX.Element {
 	const { currentFile } = useContext(FileContext);
+	const { addOutput, output } = useContext(TerminalContext);
 
 	const structureWords = [
 		'elinicio',
@@ -17,9 +23,13 @@ function EditorSideBar(): JSX.Element {
 
 	const reserverdWords = ['7print', '7echale'];
 
-	const typesWords = ['7int', '7string', '7bool'];
+	const typesWords = ['7num', '7string', '7bool'];
 
 	const controlWords = ['7if', '7else', '7endif', '7for', '7finfor'];
+
+	const supportedCharacters = new RegExp(
+		/\w|\s|\(|\)|\{|\}|\[|\]|\.|,|;|:|\+|-|\*|\/|=|>|<|!|&|\||\?|\||'|`|"|%||''|' '|7var|\$/gm,
+	);
 
 	const handleCode = (): void => {
 		let missingStructureWords: string[] = [];
@@ -30,32 +40,72 @@ function EditorSideBar(): JSX.Element {
 			word => !(currentFile?.code?.includes(word) ?? false),
 		);
 
-		// check if all lines of codes that includes ends with |SIU|.
-		const noCommentsCode = currentFile?.code
-			.replace(/\/\*[\s\S]*?\*\//g, '')
-			.split('	')
-			.filter(line => line !== '');
-		const linesWithReservedWords = noCommentsCode?.filter(line =>
+		// convert code to array if includes \r\n
+		const codeArray = currentFile?.code?.split('\r\n');
+		// check if all lines of code array that are not comments and includes reserved words or types words ends with |SIU|
+		const noCommentsCodeArray = codeArray?.filter(line => {
+			if (line.includes('/*') && line.includes('*/')) {
+				return false;
+			}
+			return true;
+		});
+		const linesWithReservedWordsArray = noCommentsCodeArray?.filter(line =>
 			reserverdWords.some(word => line.includes(word)),
 		);
-		const linesWithReservedWordsNotEndingWithSIU =
-			linesWithReservedWords?.filter(line => {
+		const linesWithReservedWordsNotEndingWithSIUArray =
+			linesWithReservedWordsArray?.filter(line => {
 				if (line.endsWith('|SIU|') || line.endsWith('|SIU|\r\n')) {
 					return false;
 				}
 				return true;
 			});
-		console.log(linesWithReservedWordsNotEndingWithSIU);
-		if (linesWithReservedWordsNotEndingWithSIU != null) {
-			if (linesWithReservedWordsNotEndingWithSIU.length > 0) {
+
+		// get number lines with words thar are not end with |SIU| from code array
+		const linesWithReservedWordsNotEndingWithSIUNumberArray =
+			linesWithReservedWordsNotEndingWithSIUArray?.map(
+				line => codeArray!.indexOf(line) + 1,
+			);
+		if (linesWithReservedWordsNotEndingWithSIUArray != null) {
+			if (linesWithReservedWordsNotEndingWithSIUArray.length > 0) {
+				// add error message
 				errorMessages.push(
-					'Las lineas de codigo que contienen palabras reservadas deben terminar con |SIU|',
+					`Error de línea. Las siguientes líneas de código no terminan con |SIU|: ${linesWithReservedWordsNotEndingWithSIUNumberArray?.join(
+						',',
+					)}`,
 				);
 			}
 		}
 
-		// delete all the spaces in the code
-		const code = currentFile?.code.replace(/\s/g, '');
+		// check if the code array doesn't have not supported characters
+		const linesWithNotSupportedCharactersArray = codeArray?.filter(line => {
+			if (
+				(line.includes('/*') && line.includes('*/')) ||
+				line.includes('\t') ||
+				line.includes('elfin')
+			) {
+				return false;
+			}
+			return !supportedCharacters.test(line);
+		});
+		// get number lines with not supported characters from code array
+		const linesWithNotSupportedCharactersNumberArray =
+			linesWithNotSupportedCharactersArray?.map(
+				line => codeArray!.indexOf(line) + 1,
+			);
+		if (linesWithNotSupportedCharactersArray != null) {
+			if (linesWithNotSupportedCharactersArray.length > 0) {
+				errorMessages.push(
+					`Caracter inválido. Las siguientes líneas de código contienen caracteres no soportados: ${linesWithNotSupportedCharactersNumberArray?.join(
+						',',
+					)}`,
+				);
+			}
+		}
+		// delete all the spaces, tabs and break lines from the code
+		const code = currentFile?.code
+			.replace(/ /g, '')
+			.replace(/\t/g, '')
+			.replace(/\r\n/g, '');
 		// delete all comments from the code. The comments are between /* and */
 		const codeWithoutComments = code?.replace(/\/\*[\s\S]*?\*\//g, '');
 
@@ -85,7 +135,7 @@ function EditorSideBar(): JSX.Element {
 				reserverdWordsBetweenVar.length > 0
 			) {
 				errorMessages.push(
-					'No se pueden usar palabras estructurales o reservadas entre la zona de variables',
+					'Error de sintaxis. No se pueden usar palabras estructurales o reservadas entre la zona de variables',
 				);
 			}
 		}
@@ -107,7 +157,7 @@ function EditorSideBar(): JSX.Element {
 			if (structureWordsBetweenBody.length > 0) {
 				incorrectOrderWords.push('iniciobody');
 				errorMessages.push(
-					'No se pueden usar palabras estructurales en la zona del body',
+					'Error de sintaxis. No se pueden usar palabras estructurales en el cuerpo del programa',
 				);
 			}
 		}
@@ -119,7 +169,7 @@ function EditorSideBar(): JSX.Element {
 			if (elinicioIndex > elfinIndex) {
 				incorrectOrderWords.push('elinicio');
 				errorMessages.push(
-					'La palabra estructural elinicio debe ir antes que la palabra estructural elfin',
+					'Error de sintaxis. El inicio del programa debe ir antes que el fin del programa',
 				);
 			}
 		}
@@ -129,7 +179,7 @@ function EditorSideBar(): JSX.Element {
 			if (elinicioIndex > varStartIndex) {
 				incorrectOrderWords.push('elinicio');
 				errorMessages.push(
-					'La palabra estructural elinicio debe ir antes que la palabra estructural 7var',
+					'Error de sintaxis. El inicio del programa debe ir antes que la zona de variables',
 				);
 			}
 		}
@@ -137,7 +187,7 @@ function EditorSideBar(): JSX.Element {
 			if (elinicioIndex > bodyStartIndex) {
 				incorrectOrderWords.push('elinicio');
 				errorMessages.push(
-					'La palabra estructural elinicio debe ir antes que la palabra estructural iniciobody',
+					'Error de sintaxis. El inicio del programa debe ir antes que el cuerpo del programa',
 				);
 			}
 		}
@@ -147,7 +197,7 @@ function EditorSideBar(): JSX.Element {
 			if (varStartIndex > bodyStartIndex) {
 				incorrectOrderWords.push('7var');
 				errorMessages.push(
-					'La palabra estructural 7var debe ir antes que la palabra estructural iniciobody',
+					'Error de sintaxis. La zona de variables debe ir antes que el cuerpo del programa',
 				);
 			}
 		}
@@ -155,14 +205,14 @@ function EditorSideBar(): JSX.Element {
 			if (varEndIndex > bodyStartIndex) {
 				incorrectOrderWords.push('7varfin');
 				errorMessages.push(
-					'La palabra estructural 7varfin debe ir antes que la palabra estructural iniciobody',
+					'Error de sintaxis. La palabra 7varfin debe ir antes que el cuerpo del programa',
 				);
 			}
 		}
 
 		if (missingStructureWords.length > 0) {
 			errorMessages.push(
-				`Faltan las palabras estructurales: ${missingStructureWords.join(
+				`Error de sintaxis. Faltan las palabras: ${missingStructureWords.join(
 					', ',
 				)}`,
 			);
@@ -170,7 +220,7 @@ function EditorSideBar(): JSX.Element {
 
 		if (incorrectOrderWords.length > 0) {
 			errorMessages.push(
-				`Por favor, verifica el orden de las siguientes palabras estructurales: ${incorrectOrderWords.join(
+				`Por favor, verifica el orden de las siguientes palabras: ${incorrectOrderWords.join(
 					', ',
 				)}`,
 			);
@@ -179,6 +229,12 @@ function EditorSideBar(): JSX.Element {
 		console.log('missingStructureWords', missingStructureWords);
 		console.log('incorrectOrderWords', incorrectOrderWords);
 		console.log('errorMessages', errorMessages);
+
+		if (errorMessages.length > 0) {
+			addOutput(errorMessages);
+		} else {
+			addOutput(['No se encontraron errores', codeWithoutComments]);
+		}
 	};
 
 	return (

@@ -9,3 +9,9 @@
 	align-items: center;
 	justify-content: space-between;
 }
+
+.EditorConsole__body {
+	padding: 20px 0;
+	max-width: 1200px;
+	overflow-x: auto;
+}
