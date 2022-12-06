@@ -16,16 +16,6 @@ const useFile = (): IFileContexData => {
 		setCurrentFile(newFile);
 	};
 
-	const updateFile = (file: IFile): void => {
-		const newFiles = files.map(f => {
-			if (f.name === file.name) {
-				return file;
-			}
-			return f;
-		});
-		setFiles(newFiles);
-	};
-
 	const selectFile = (file: IFile): void => {
 		setCurrentFile(file);
 	};
@@ -47,7 +37,6 @@ const useFile = (): IFileContexData => {
 		files,
 		currentFile,
 		addFile,
-		updateFile,
 		selectFile,
 		removeFile,
 	};
