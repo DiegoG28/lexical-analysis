@@ -10,7 +10,7 @@ import TerminalContext from '@/context/TerminalContext';
 
 function EditorSideBar(): JSX.Element {
 	const { currentFile } = useContext(FileContext);
-	const { addOutput, output } = useContext(TerminalContext);
+	const { addOutput } = useContext(TerminalContext);
 
 	const structureWords = [
 		'elinicio',
@@ -49,27 +49,24 @@ function EditorSideBar(): JSX.Element {
 			}
 			return true;
 		});
-		const linesWithReservedWordsArray = noCommentsCodeArray?.filter(line =>
+		const linesWithReservedWords = noCommentsCodeArray?.filter(line =>
 			reserverdWords.some(word => line.includes(word)),
 		);
-		const linesWithReservedWordsNotEndingWithSIUArray =
-			linesWithReservedWordsArray?.filter(line => {
-				if (line.endsWith('|SIU|') || line.endsWith('|SIU|\r\n')) {
-					return false;
-				}
-				return true;
-			});
+		const linesWithoutEnd = linesWithReservedWords?.filter(line => {
+			if (line.endsWith('|SIU|') || line.endsWith('|SIU|\r\n')) {
+				return false;
+			}
+			return true;
+		});
 
 		// get number lines with words thar are not end with |SIU| from code array
-		const linesWithReservedWordsNotEndingWithSIUNumberArray =
-			linesWithReservedWordsNotEndingWithSIUArray?.map(
-				line => codeArray!.indexOf(line) + 1,
-			);
-		if (linesWithReservedWordsNotEndingWithSIUArray != null) {
-			if (linesWithReservedWordsNotEndingWithSIUArray.length > 0) {
-				// add error message
+		const numbersLineWithoudEnd = linesWithoutEnd?.map(
+			line => codeArray!.indexOf(line) + 1,
+		);
+		if (linesWithoutEnd != null) {
+			if (linesWithoutEnd.length > 0) {
 				errorMessages.push(
-					`Error de línea. Las siguientes líneas de código no terminan con |SIU|: ${linesWithReservedWordsNotEndingWithSIUNumberArray?.join(
+					`Error de línea. Las siguientes líneas de código no terminan con |SIU|: ${numbersLineWithoudEnd?.join(
 						',',
 					)}`,
 				);
@@ -77,7 +74,7 @@ function EditorSideBar(): JSX.Element {
 		}
 
 		// check if the code array doesn't have not supported characters
-		const linesWithNotSupportedCharactersArray = codeArray?.filter(line => {
+		const linesWithNotSupportedChar = codeArray?.filter(line => {
 			if (
 				(line.includes('/*') && line.includes('*/')) ||
 				line.includes('\t') ||
@@ -88,14 +85,13 @@ function EditorSideBar(): JSX.Element {
 			return !supportedCharacters.test(line);
 		});
 		// get number lines with not supported characters from code array
-		const linesWithNotSupportedCharactersNumberArray =
-			linesWithNotSupportedCharactersArray?.map(
-				line => codeArray!.indexOf(line) + 1,
-			);
-		if (linesWithNotSupportedCharactersArray != null) {
-			if (linesWithNotSupportedCharactersArray.length > 0) {
+		const numbersLineWithNotSupportedChar = linesWithNotSupportedChar?.map(
+			line => codeArray!.indexOf(line) + 1,
+		);
+		if (linesWithNotSupportedChar != null) {
+			if (linesWithNotSupportedChar.length > 0) {
 				errorMessages.push(
-					`Caracter inválido. Las siguientes líneas de código contienen caracteres no soportados: ${linesWithNotSupportedCharactersNumberArray?.join(
+					`Caracter inválido. Las siguientes líneas de código contienen caracteres no soportados: ${numbersLineWithNotSupportedChar?.join(
 						',',
 					)}`,
 				);
@@ -226,14 +222,13 @@ function EditorSideBar(): JSX.Element {
 			);
 		}
 
-		console.log('missingStructureWords', missingStructureWords);
-		console.log('incorrectOrderWords', incorrectOrderWords);
-		console.log('errorMessages', errorMessages);
-
 		if (errorMessages.length > 0) {
 			addOutput(errorMessages);
 		} else {
-			addOutput(['No se encontraron errores', codeWithoutComments]);
+			addOutput([
+				'No se encontraron errores',
+				codeWithoutComments as string,
+			]);
 		}
 	};
 
@@ -247,7 +242,6 @@ function EditorSideBar(): JSX.Element {
 			<div className="EditorSideBar__content txt">
 				<p>Analyze your code to find issues.</p>
 				<Button onClick={handleCode}>Analyze code</Button>
-				<Button>Fix problems</Button>
 			</div>
 		</div>
 	);
