@@ -1,0 +1,13 @@
+elinicio
+   7var
+      numBilletes, i: 7num|SIU|
+   7varfin
+   iniciobody
+      7print 'Generador riqueza'
+      7print 'Ingresa el número de billetes a imprimir'|SIU|
+	7echale numBilletes|SIU|
+	7for (i = 1|SIU| i < numBilletes|SIU| i++)
+	   7print 'Tienes ', 'dólar(es).'
+	7finfor
+   finbody
+elfin
