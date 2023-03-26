@@ -1,11 +1,10 @@
 import '@/styles/EditorConsole.css';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useContext } from 'react';
-import TerminalContext from '@/context/TerminalContext';
+import { useTerminal } from '@/hooks/useTerminal';
 
 function EditorConsole(): JSX.Element {
-	const { output } = useContext(TerminalContext);
+	const terminal = useTerminal();
 	return (
 		<div className="EditorConsole">
 			<div className="EditorConsole__header">
@@ -17,12 +16,12 @@ function EditorConsole(): JSX.Element {
 				</div>
 			</div>
 			<div className="EditorConsole__body txt">
-				{output.map((message, index) => (
+				{terminal.output.map((message, index) => (
 					<div
 						key={`message-${index}`}
 						className="EditorConsole__body__message"
 					>
-						{message}
+						{`${message.type}  ${message.message}  ${message.line}`}
 					</div>
 				))}
 			</div>

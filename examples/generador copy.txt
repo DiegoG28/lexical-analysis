@@ -1,6 +1,6 @@
-elinicio
+elinici
 sietevar
-sietenum numBilletes=19|SIU|
+numBilletes, i: sietenum|SIU| /*prueba*/  
 sietevarfin
 iniciobody
 sieteprint 'Generador de riqueza'|SIU|
