@@ -1,0 +1,14 @@
+elfin
+elinicio
+sietevarfin
+iniciobody
+sietenum numBilletes=19|SIU|
+sietevar
+sieteprint 'Generador de riqueza'|SIU|
+sieteprint 'Ingresa el número de billetes a imprimir'|SIU|
+sietechale numBilletes|SIU|
+sietefor (i = 1|SIU| i < numBilletes|SIU| i++)
+sieteprint 'Tienes ', 'dólar(es).'|SIU|
+sietefinfor
+finbody
+/*prueba*/
